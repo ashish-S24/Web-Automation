@@ -47,7 +47,7 @@ async function run() {
     await page.waitForSelector("input[name='password']");
     await page.type("input[name='password']", configJSO.password, { delay: 20 });
 
-    await page.waitFor(3000);
+    await new Promise(function(resolve) {setTimeout(resolve, 3000)});
 
     // press click on page3
     await page.waitForSelector("button[data-analytics='LoginPassword']");
@@ -63,12 +63,12 @@ async function run() {
 
 
     // find number of pages
-    await page.waitForSelector("a[data-attr1='Last']");
-    let numPages = await page.$eval("a[data-attr1='Last']", function (atag) {
-        let totPages = parseInt(atag.getAttribute("data-page"));
-        return totPages;
-    });
-
+   // await page.waitForSelector("a[data-attr1='Last']");
+   // let numPages = await page.$eval("a[data-attr1='Last']", function (atag) {
+      //  let totPages = parseInt(atag.getAttribute("data-page"));
+     //   return totPages;
+    //});
+    let numPages = 1;
     for (let i = 1; i <= numPages; i++) {
         await handleAllContestsOfAPage(page, browser);
 
@@ -97,14 +97,14 @@ async function handleAllContestsOfAPage(page, browser) {
         let ctab = await browser.newPage();
         await saveModeratorInContest(ctab, args.url + curls[i], configJSO.moderators);
         await ctab.close();
-        await page.waitFor(3000);
+        await new Promise(function(resolve) {setTimeout(resolve, 3000)});
     }
 }
 
 async function saveModeratorInContest(ctab, fullCurl, moderator) {
     await ctab.bringToFront();
     await ctab.goto(fullCurl);
-    await ctab.waitFor(3000);
+    await new Promise(function(resolve) {setTimeout(resolve, 3000)});
 
     // click on moderators tab
     await ctab.waitForSelector("li[data-tab='moderators']");
